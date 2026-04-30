@@ -1,0 +1,1329 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Acesso às Universidades</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#2563eb; --blue-light:#3b82f6; --blue-dark:#1d4ed8;
+  --blue-glow:rgba(37,99,235,.12); --blue-glow2:rgba(37,99,235,.06);
+  --bg:#f4f7ff; --bg2:#eef2ff; --surface:#ffffff; --surface2:#f1f5ff;
+  --border:#dbeafe; --text:#0f172a; --text2:#475569; --text3:#94a3b8;
+  --shadow:0 4px 24px rgba(37,99,235,.08); --shadow-lg:0 16px 48px rgba(37,99,235,.16);
+  --radius:16px; --radius-sm:10px;
+}
+[data-theme="dark"] {
+  --bg:#07090f; --bg2:#0c1120; --surface:#0f1629; --surface2:#151f35;
+  --border:#1a2d5a; --text:#e8f0fe; --text2:#8fa3c8; --text3:#3d5080;
+  --shadow:0 4px 24px rgba(0,0,0,.5); --shadow-lg:0 16px 48px rgba(0,0,0,.6);
+  --blue-glow:rgba(59,130,246,.12); --blue-glow2:rgba(59,130,246,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .4s,color .4s;}
+
+/* CURSOR GLOW */
+.cursor-glow{pointer-events:none;position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.07) 0%,transparent 70%);transform:translate(-50%,-50%);transition:transform .1s linear;z-index:0;}
+
+/* NAV */
+nav{position:fixed;z-index:100;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s;}
+[data-theme="dark"] nav{background:rgba(7,9,15,.8);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--blue);letter-spacing:-.5px;display:flex;align-items:center;gap:8px;}
+.nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:logoPulse 2.5s ease-in-out infinite;}
+@keyframes logoPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.6);opacity:.5;}}
+.nav-links{display:flex;gap:2px;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--text2);font-size:13px;font-weight:500;padding:7px 16px;border-radius:20px;transition:all .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%) scaleX(0);width:16px;height:2px;background:var(--blue);border-radius:2px;transition:transform .25s;}
+.nav-links li.active a,.nav-links a:hover{color:var(--blue);}
+.nav-links li.active a::after,.nav-links a:hover::after{transform:translateX(-50%) scaleX(1);}
+#theme-toggle{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:7px 16px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .25s;font-family:'DM Sans',sans-serif;}
+#theme-toggle:hover{background:var(--blue-glow);color:var(--blue);border-color:var(--blue-light);}
+
+/* HERO */
+.hero-wrap{background:transparent;padding-top:64px;}
+.hero{min-height:100vh;padding:80px 48px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1200px;margin:0 auto;position:relative;}
+.hero-bg-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+.hero-bg-orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(37,99,235,.12),transparent);top:-100px;left:-100px;}
+.hero-bg-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,.08),transparent);bottom:0;right:-50px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,130,246,0.15);color:#93c5fd;border:1px solid rgba(99,130,246,0.3);border-radius:20px;padding:7px 16px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:28px;animation:fadeSlideDown .8s ease both;}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:logoPulse 2s infinite;}
+@keyframes fadeSlideDown{from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,58px);font-weight:800;line-height:1.08;letter-spacing:-2px;margin-bottom:24px;animation:fadeSlideUp .9s .1s ease both;color:#fff;}
+.hero h1 span{background:linear-gradient(135deg,var(--blue) 0%,#818cf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hero p{color:rgba(180,200,255,0.75);font-size:16px;line-height:1.75;margin-bottom:40px;max-width:460px;animation:fadeSlideUp .9s .2s ease both;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;animation:fadeSlideUp .9s .3s ease both;}
+.btn-primary{background:var(--blue);color:white;border:none;padding:15px 30px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .25s;box-shadow:0 4px 20px rgba(37,99,235,.35);display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;position:relative;overflow:hidden;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .25s;}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-3px);box-shadow:0 8px 28px rgba(37,99,235,.45);}
+.btn-primary:hover::before{opacity:1;}
+.btn-secondary{background:transparent;color:var(--blue);border:1.5px solid var(--blue);padding:15px 30px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;}
+.btn-secondary:hover{background:var(--blue-glow);transform:translateY(-3px);box-shadow:0 4px 16px rgba(37,99,235,.15);}
+
+/* HERO VISUAL — thumbnail clicável */
+.hero-visual{border-radius:20px;overflow:hidden;aspect-ratio:16/9;box-shadow:var(--shadow-lg);border:1px solid var(--border);animation:fadeSlideUp .9s .2s ease both;position:relative;cursor:pointer;}
+.hero-visual::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.08),transparent);z-index:1;pointer-events:none;border-radius:20px;}
+.hero-visual iframe{width:100%;height:100%;border:none;display:block;}
+#yt-thumb{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;}
+#yt-thumb img{width:100%;height:100%;object-fit:cover;}
+#yt-play-btn{position:absolute;width:68px;height:68px;background:rgba(220,0,0,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;box-shadow:0 4px 20px rgba(0,0,0,.4);}
+#yt-play-btn:hover{transform:scale(1.12);background:rgba(220,0,0,1);}
+#yt-play-btn svg{margin-left:4px;}
+
+/* STATS */
+.stats-bar{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.07);border-bottom:1px solid rgba(255,255,255,0.07);padding:36px 48px;}
+.stats-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-around;gap:40px;flex-wrap:wrap;}
+.stat{text-align:center;position:relative;}
+.stat-number{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;line-height:1;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-label{font-size:11px;color:rgba(180,200,255,0.6);text-transform:uppercase;letter-spacing:.8px;margin-top:6px;font-weight:500;}
+.stat-divider{position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:1px;height:32px;background:var(--border);}
+
+/* SECTIONS */
+section{padding:90px 48px;max-width:1200px;margin:0 auto;}
+.section-tag{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-tag::before{content:'';width:24px;height:2px;background:var(--blue);border-radius:2px;}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-1.5px;color:var(--text);margin-bottom:48px;line-height:1.1;}
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:1200px;margin:0 auto;}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .35s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;cursor:default;}
+.card-glow{position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),var(--blue-glow2) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none;}
+.card:hover .card-glow{opacity:1;}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),#818cf8);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;}
+.card:hover{transform:translateY(-6px) scale(1.01);box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,.3);}
+.card:hover::after{transform:scaleX(1);}
+.card-icon{font-size:28px;margin-bottom:16px;display:block;transition:transform .3s;}
+.card:hover .card-icon{transform:scale(1.15) rotate(-3deg);}
+.card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.card p,.card li{font-size:13px;color:var(--text2);line-height:1.65;}
+.card ul,.card ol{padding-left:16px;display:flex;flex-direction:column;gap:5px;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tags span{background:var(--blue-glow);color:var(--blue);border:1px solid rgba(37,99,235,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;transition:all .2s;}
+.tags span:hover{background:var(--blue);color:white;}
+
+/* INSTITUTOS */
+.instituto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;}
+.instituto-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+.instituto-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,.3);}
+.instituto-header{background:linear-gradient(135deg,var(--blue),#818cf8);padding:24px;color:white;position:relative;overflow:hidden;}
+.instituto-header::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.08);}
+.instituto-header::after{content:'';position:absolute;bottom:-20px;left:20px;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.05);}
+.instituto-header h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;position:relative;z-index:1;}
+.instituto-header p{font-size:12px;opacity:.85;margin-top:3px;position:relative;z-index:1;}
+.instituto-body{padding:24px;display:flex;flex-direction:column;gap:16px;}
+.info-group h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:8px;}
+.info-group p,.info-group li{font-size:13px;color:var(--text2);line-height:1.6;}
+.info-group ul{padding-left:14px;}
+.btn-site{display:inline-flex;align-items:center;gap:6px;margin-top:4px;background:var(--blue);color:white;text-decoration:none;padding:11px 22px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;transition:all .25s;}
+.btn-site:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.35);}
+
+/* AÇÕES */
+.acoes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+.acao-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+.acao-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,.3);}
+.acao-header{padding:14px 20px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.acao-header-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+.acao-header h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);}
+.acao-body{padding:20px;}
+.acao-body h4{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:8px;}
+.acao-body p{font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.6;}
+.acao-body ul{padding-left:14px;}
+.acao-body li{font-size:13px;color:var(--text2);margin-bottom:5px;line-height:1.6;}
+.link-externo{display:inline-flex;align-items:center;gap:4px;margin-top:10px;color:var(--blue);font-size:13px;font-weight:600;text-decoration:none;transition:gap .2s;}
+.link-externo:hover{gap:8px;text-decoration:underline;}
+
+/* EXTERIOR */
+.exterior-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+.exterior-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+.exterior-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,.3);}
+.exterior-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;}
+.exterior-header h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--blue);}
+.exterior-header p{font-size:11px;color:var(--text3);margin-top:3px;}
+.exterior-badge{background:linear-gradient(135deg,var(--blue),#818cf8);color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;letter-spacing:.5px;}
+.exterior-body{padding:18px 22px;}
+.exterior-body ul{padding-left:14px;display:flex;flex-direction:column;gap:7px;margin-bottom:18px;}
+.exterior-body li{font-size:13px;color:var(--text2);line-height:1.55;}
+.btn-exterior{display:inline-flex;align-items:center;gap:6px;background:var(--blue-glow);color:var(--blue);border:1px solid rgba(37,99,235,.2);text-decoration:none;padding:9px 18px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;transition:all .25s;}
+.btn-exterior:hover{background:var(--blue);color:white;transform:translateY(-2px);box-shadow:0 4px 14px rgba(37,99,235,.3);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 48px;text-align:center;}
+.footer-inner{max-width:1200px;margin:0 auto;}
+footer p{color:var(--text3);font-size:13px;}
+footer strong{color:var(--blue);}
+.footer-heart{display:inline-block;animation:heartbeat 1.5s ease infinite;}
+@keyframes heartbeat{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
+
+/* CHAT */
+#chat-bubble{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
+#chat-window{display:none;flex-direction:column;width:380px;height:540px;background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 64px rgba(37,99,235,.18),0 8px 24px rgba(0,0,0,.1);overflow:hidden;}
+#chat-window.open{display:flex;animation:chatIn .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes chatIn{from{opacity:0;transform:translateY(20px) scale(.92);}to{opacity:1;transform:translateY(0) scale(1);}}
+#chat-header{background:linear-gradient(135deg,var(--blue) 0%,#818cf8 100%);color:white;padding:18px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;overflow:hidden;}
+#chat-header::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.08);}
+.chat-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(255,255,255,.4);}
+.chat-avatar img{width:100%;height:100%;object-fit:cover;}
+.chat-header-info{flex:1;}
+.chat-header-name{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;}
+.chat-status{font-size:11px;opacity:.85;display:flex;align-items:center;gap:5px;margin-top:2px;}
+.chat-status-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:logoPulse 2s infinite;}
+#chat-close{background:rgba(255,255,255,.15);border:none;color:white;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;position:relative;z-index:1;flex-shrink:0;}
+#chat-close:hover{background:rgba(255,255,255,.3);transform:rotate(90deg);}
+#chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--bg2);}
+#chat-messages::-webkit-scrollbar{width:4px;}
+#chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.msg{max-width:85%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.6;word-break:break-word;animation:msgIn .25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px) scale(.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+.msg.bot{background:var(--surface);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px;color:var(--text);}
+.msg.user{background:linear-gradient(135deg,var(--blue),#818cf8);color:white;align-self:flex-end;border-bottom-right-radius:4px;box-shadow:0 4px 12px rgba(37,99,235,.3);}
+.msg.loading{background:var(--surface);border:1px solid var(--border);align-self:flex-start;color:var(--text3);}
+.typing-dots{display:inline-flex;gap:4px;align-items:center;padding:2px 0;}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--text3);animation:typingDot 1.2s ease infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes typingDot{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-4px);opacity:1;}}
+#chat-input-area{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0;}
+#chat-input{flex:1;border:1.5px solid var(--border);border-radius:14px;padding:11px 16px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--bg2);color:var(--text);outline:none;transition:all .25s;}
+#chat-input::placeholder{color:var(--text3);}
+#chat-input:focus{border-color:var(--blue);background:var(--surface);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+#chat-send{background:linear-gradient(135deg,var(--blue),#818cf8);border:none;border-radius:12px;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;box-shadow:0 4px 14px rgba(37,99,235,.3);}
+#chat-send:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(37,99,235,.4);}
+#chat-send:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+#chat-send svg{width:16px;height:16px;fill:white;}
+#chat-toggle{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#818cf8);border:none;cursor:pointer;box-shadow:0 8px 24px rgba(37,99,235,.4);display:flex;align-items:center;justify-content:center;transition:all .3s;position:relative;overflow:hidden;padding:0;}
+#chat-toggle::before{content:'';position:absolute;inset:-4px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#818cf8);opacity:.3;animation:toggleRing 2s ease-in-out infinite;}
+@keyframes toggleRing{0%,100%{transform:scale(1);opacity:.3;}50%{transform:scale(1.2);opacity:0;}}
+#chat-toggle:hover{transform:scale(1.12);box-shadow:0 12px 32px rgba(37,99,235,.5);}
+#chat-toggle img{width:100%;height:100%;object-fit:cover;border-radius:50%;position:relative;z-index:1;}
+
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;padding:90px 20px 60px;}
+  .hero-visual{display:none;}
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  section{padding:60px 20px;}
+  .stats-bar{padding:28px 20px;}
+  #chat-window{width:calc(100vw - 24px);}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.85;"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<nav>
+  <div class="nav-logo"><div class="nav-logo-dot"></div>Guia Universitário</div>
+  <ul class="nav-links">
+    <li class="active"><a href="#permanencia">Permanência</a></li>
+    <li><a href="#institutos">Institutos</a></li>
+    <li><a href="#acoes">Ações Gov.</a></li>
+    <li><a href="#exterior">Exterior</a></li>
+  </ul>
+  <button id="theme-toggle">🌙 Escuro</button>
+</nav>
+
+<div class="hero-wrap">
+  <div class="hero">
+    <div class="hero-bg-orb hero-bg-orb-1"></div>
+    <div class="hero-bg-orb hero-bg-orb-2"></div>
+    <div style="position:relative;z-index:1;">
+      <div class="hero-badge"><div class="hero-badge-dot"></div>Instituto JCA · Publicação Gratuita</div>
+      <h1>Guia de <span>Acesso e Permanência</span> nas Universidades</h1>
+      <p>Tudo que você precisa saber para entrar e se manter no Ensino Superior — programas, auxílios, institutos federais e muito mais.</p>
+      <div class="hero-cta">
+        <a href="#permanencia" class="btn-primary">Explorar o Guia →</a>
+        <a href="#" class="btn-secondary" onclick="document.getElementById('chat-window').classList.add('open');document.getElementById('chat-input').focus();return false;">Perguntar à Guida 💬</a>
+      </div>
+    </div>
+
+    <!-- HERO VISUAL: thumbnail clicável do YouTube -->
+    <div class="hero-visual" style="position:relative;z-index:1;" id="yt-container">
+      <div id="yt-thumb">
+        <img
+          src="https://img.youtube.com/vi/ytd_IGfpkrM/hqdefault.jpg"
+          alt="Thumbnail do vídeo"
+          onerror="this.src='https://img.youtube.com/vi/ytd_IGfpkrM/mqdefault.jpg'"
+        />
+        <div id="yt-play-btn">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <iframe
+        id="yt-iframe"
+        src=""
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        style="width:250%;height:250%;border:none;display:block;"
+      ></iframe>
+    </div>
+
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-number" data-target="7">0</div><div class="stat-label">Universidades</div><div class="stat-divider"></div></div>
+    <div class="stat"><div class="stat-number" data-target="3">0</div><div class="stat-label">Institutos Federais</div><div class="stat-divider"></div></div>
+    <div class="stat"><div class="stat-number" data-target="6">0</div><div class="stat-label">Municípios</div><div class="stat-divider"></div></div>
+    <div class="stat"><div class="stat-number">100%</div><div class="stat-label">Gratuito</div></div>
+  </div>
+</div>
+
+<section id="permanencia">
+  <div class="section-tag">Permanência</div>
+  <h2 class="section-title">Como permanecer e prosperar<br>na universidade</h2>
+  <div class="cards-grid">
+    <div class="card reveal"><div class="card-glow"></div><span class="card-icon">📋</span><h3>O que é Permanência</h3><p>Conjunto de políticas e auxílios que viabilizam a continuidade dos estudos para estudantes em vulnerabilidade socioeconômica.</p></div>
+    <div class="card reveal"><div class="card-glow"></div><span class="card-icon">📝</span><h3>Como Solicitar</h3><ol><li>Leia o edital da sua universidade</li><li>Preencha o formulário de inscrição</li><li>Separe os documentos exigidos</li><li>Envie e acompanhe a análise</li><li>Verifique resultados e prazos</li><li>Renove periodicamente</li></ol></div>
+    <div class="card reveal"><div class="card-glow"></div><span class="card-icon">📄</span><h3>Documentos Necessários</h3><ul><li>Identidade e CPF</li><li>Comprovantes de renda familiar</li><li>Comprovante de residência</li><li>Histórico ou declaração de matrícula</li></ul></div>
+    <div class="card reveal"><div class="card-glow"></div><span class="card-icon">🎯</span><h3>Programas Nacionais</h3><ul><li><strong>PNAES:</strong> Moradia, alimentação, transporte, saúde</li><li><strong>Bolsa Permanência MEC:</strong> Indígenas e quilombolas</li><li><strong>Bolsa Prouni:</strong> Para bolsistas Prouni</li></ul></div>
+    <div class="card reveal"><div class="card-glow"></div><span class="card-icon">💡</span><h3>Dicas Essenciais</h3><ul><li>Cadastre-se nos restaurantes universitários</li><li>Solicite auxílio moradia ou transporte</li><li>Use apoio psicológico e pedagógico</li><li>Busque monitoria e estágios</li></ul></div>
+    <div class="card reveal"><div class="card-glow"></div><span class="card-icon">🏫</span><h3>Universidades do RJ</h3><div class="tags" style="margin-bottom:12px"><span>UFF</span><span>UFRJ</span><span>UERJ</span><span>UNIRIO</span><span>UFRRJ</span><span>UENF</span><span>PUC-RJ</span></div><p>Consulte a Pró-Reitoria de cada instituição para editais de auxílios.</p></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="institutos">
+  <div class="section-tag">Institutos Federais</div>
+  <h2 class="section-title">Excelência técnica e tecnológica<br>gratuita no RJ</h2>
+  <div class="instituto-grid">
+    <div class="instituto-card reveal">
+      <div class="instituto-header"><h2>CEFET/RJ</h2><p>Centro Federal de Educação Tecnológica Celso Suckow da Fonseca</p></div>
+      <div class="instituto-body">
+        <div class="info-group"><h4>📍 Campus (8)</h4><p>Maracanã, Angra dos Reis, Itaguaí, Maria da Graça, Nova Friburgo, Nova Iguaçu, Petrópolis, Valença.</p></div>
+        <div class="info-group"><h4>🎓 Cursos</h4><div class="tags"><span>Bacharelado</span><span>Licenciatura</span><span>Tecnológico</span></div></div>
+        <div class="info-group"><h4>🤝 Assistência</h4><ul><li><strong>PAE:</strong> Alimentação, Transporte, Material</li><li><strong>PAED:</strong> Apoio a pessoas com deficiência</li><li><strong>PAEM:</strong> Auxílio para estudantes mães</li></ul></div>
+        <a href="http://www.cefet-rj.br" target="_blank" class="btn-site">Visitar Site →</a>
+      </div>
+    </div>
+    <div class="instituto-card reveal">
+      <div class="instituto-header"><h2>IFRJ</h2><p>Instituto Federal de Educação, Ciência e Tecnologia do Rio de Janeiro</p></div>
+      <div class="instituto-body">
+        <div class="info-group"><h4>📍 Campus (15)</h4><p>Rio de Janeiro, Niterói, Duque de Caxias, Nilópolis, São Gonçalo, Volta Redonda e mais.</p></div>
+        <div class="info-group"><h4>🎓 Cursos</h4><div class="tags"><span>Bacharelado</span><span>Licenciatura</span></div></div>
+        <div class="info-group"><h4>🤝 Assistência</h4><ul><li>Auxílio Moradia, Transporte e Alimentação</li><li>Auxílio Didático e Creche</li></ul></div>
+        <a href="https://portal.ifrj.edu.br" target="_blank" class="btn-site">Visitar Site →</a>
+      </div>
+    </div>
+    <div class="instituto-card reveal">
+      <div class="instituto-header"><h2>IFFluminense</h2><p>Instituto Federal Fluminense</p></div>
+      <div class="instituto-body">
+        <div class="info-group"><h4>📍 Campus (12)</h4><p>Campos, Macaé, Cabo Frio, Itaperuna, Maricá e mais 7 unidades.</p></div>
+        <div class="info-group"><h4>🎓 Cursos</h4><div class="tags"><span>Bacharelado</span><span>Licenciatura</span><span>Tecnológico</span></div></div>
+        <div class="info-group"><h4>🤝 Assistência</h4><ul><li>Bolsa Permanência e Auxílio Moradia</li><li><strong>CELIFF:</strong> Centro de Línguas gratuito</li></ul></div>
+        <a href="https://www.iff.edu.br" target="_blank" class="btn-site">Visitar Site →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="acoes">
+  <div class="section-tag">Ações Governamentais</div>
+  <h2 class="section-title">Programas de apoio do<br>estado e municípios</h2>
+  <div class="acoes-grid">
+    <div class="acao-card reveal"><div class="acao-header"><div class="acao-header-dot"></div><h3>Estado do Rio de Janeiro</h3></div><div class="acao-body"><h4>🍽️ Restaurantes do Povo</h4><p>Refeições a baixo custo (R$ 0,50 a R$ 2,00) para estudantes e população em geral.</p><ul><li><strong>Bangu:</strong> Rua Francisco Real, 1780</li><li><strong>Bonsucesso:</strong> Av. Brasil, 6357</li><li><strong>Niterói:</strong> Av. Visconde do Rio Branco, 281</li></ul></div></div>
+    <div class="acao-card reveal"><div class="acao-header"><div class="acao-header-dot"></div><h3>Rio de Janeiro (Capital)</h3></div><div class="acao-body"><h4>🚌 Passe Livre Universitário</h4><p>Gratuidade em ônibus municipais, BRT e VLT.</p><ul><li><strong>Direito:</strong> Bolsistas PROUNI, Cotistas ou renda per capita até 1 salário mínimo</li><li><strong>Benefício:</strong> 4 viagens/dia, 76 viagens/mês</li></ul><a href="https://www.cartaoriocard.com.br" target="_blank" class="link-externo">Solicitar Cartão →</a></div></div>
+    <div class="acao-card reveal"><div class="acao-header"><div class="acao-header-dot"></div><h3>Maricá</h3></div><div class="acao-body"><h4>🎓 Passaporte Universitário</h4><p>Bolsas integrais ou parciais para graduação.</p><ul><li><strong>Bolsa 100%:</strong> Renda até 6 salários mínimos</li><li><strong>Contrapartida:</strong> 20h mensais de serviço à comunidade</li></ul><a href="https://passaporteuniversitario.marica.rj.gov.br" target="_blank" class="link-externo">Saiba Mais →</a></div></div>
+    <div class="acao-card reveal"><div class="acao-header"><div class="acao-header-dot"></div><h3>Niterói</h3></div><div class="acao-body"><h4>🤝 Agentes pela Cidadania</h4><p>Bolsa auxílio de R$ 600,00 para universitários.</p><ul><li><strong>Requisitos:</strong> Morar em Niterói, renda até 3 salários mínimos, Licenciatura</li><li><strong>Vagas:</strong> 70 UFF + 30 outras IES</li></ul></div></div>
+    <div class="acao-card reveal"><div class="acao-header"><div class="acao-header-dot"></div><h3>São Gonçalo</h3></div><div class="acao-body"><h4>🗣️ CIUG - Centro de Línguas</h4><p>Cursos gratuitos de Inglês, Espanhol, Francês e Redação.</p><ul><li><strong>Público:</strong> Estudantes e comunidade, a partir de 13 anos</li></ul></div></div>
+    <div class="acao-card reveal"><div class="acao-header"><div class="acao-header-dot"></div><h3>Itaboraí</h3></div><div class="acao-body"><h4>🚌 Transporte Social Universitário</h4><p>Transporte gratuito para universitários, com renovação semestral.</p></div></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="exterior">
+  <div class="section-tag">Estudos no Exterior</div>
+  <h2 class="section-title">O mundo é a sua<br>sala de aula</h2>
+  <div class="exterior-grid">
+    <div class="exterior-card reveal"><div class="exterior-header"><div><h3>UFF</h3><p>Universidade Federal Fluminense</p></div><span class="exterior-badge">✈️ Internacional</span></div><div class="exterior-body"><ul><li><strong>Mobilidade Regular:</strong> 1 semestre em IES parceiras</li><li><strong>Bolsas Santander:</strong> Ibero-Americanas e Top España</li><li><strong>REARI-RJ:</strong> Utrecht Network e Aix-Marseille</li></ul><a href="https://www.uff.br/?q=programas-de-mobilidade" target="_blank" class="btn-exterior">Saiba Mais →</a></div></div>
+    <div class="exterior-card reveal"><div class="exterior-header"><div><h3>UFRJ</h3><p>Universidade Federal do Rio de Janeiro</p></div><span class="exterior-badge">✈️ Internacional</span></div><div class="exterior-body"><ul><li><strong>Mobilidade Regular:</strong> Centenas de parceiros</li><li><strong>SMILE:</strong> Rede Magalhães (Europa, AL e Caribe)</li></ul><a href="https://internacional.ufrj.br/programas-de-mobilidade/?" target="_blank" class="btn-exterior">Saiba Mais →</a></div></div>
+    <div class="exterior-card reveal"><div class="exterior-header"><div><h3>UERJ</h3><p>Universidade do Estado do Rio de Janeiro</p></div><span class="exterior-badge">✈️ Internacional</span></div><div class="exterior-body"><ul><li><strong>Destinos:</strong> Europa, EUA, Austrália, Japão, Canadá e AL</li><li><strong>Convênios:</strong> Diretos ou via agências de fomento</li></ul><a href="http://www.dircint.uerj.br" target="_blank" class="btn-exterior">Saiba Mais →</a></div></div>
+    <div class="exterior-card reveal"><div class="exterior-header"><div><h3>UENF</h3><p>Univ. Estadual do Norte Fluminense</p></div><span class="exterior-badge">✈️ Internacional</span></div><div class="exterior-body"><ul><li><strong>FAPERJ/França:</strong> Pesquisa conjunta</li><li><strong>HUAWEI-SRE:</strong> Mulheres na Tecnologia</li></ul><a href="https://uenf.br/portal/informes-internos/assaii-divulga-oportunidades-no-exterior/" target="_blank" class="btn-exterior">Saiba Mais →</a></div></div>
+    <div class="exterior-card reveal"><div class="exterior-header"><div><h3>UFRRJ</h3><p>Universidade Federal Rural do RJ</p></div><span class="exterior-badge">✈️ Internacional</span></div><div class="exterior-body"><ul><li><strong>Santander Luso-Brasileiras:</strong> Portugal</li><li><strong>Santander Ibero-Americana:</strong> Países ibero-americanos</li></ul><a href="https://portal.ufrrj.br/pro-reitoria-de-graduacao/programas/programa-mobilidade-estudantil/" target="_blank" class="btn-exterior">Saiba Mais →</a></div></div>
+    <div class="exterior-card reveal"><div class="exterior-header"><div><h3>PUC-Rio</h3><p>Pontifícia Universidade Católica</p></div><span class="exterior-badge">✈️ Internacional</span></div><div class="exterior-body"><ul><li><strong>Alcance:</strong> +300 convênios em todos os continentes</li><li><strong>Duração:</strong> 1 ou 2 semestres</li></ul><a href="https://www.puc-rio.br/ccci/academico/" target="_blank" class="btn-exterior">Saiba Mais →</a></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div style="display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap;margin-bottom:20px;">
+      <a href="https://instagram.com/instituto.jca" target="_blank" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s;" onmouseover="this.style.color='#e1306c'" onmouseout="this.style.color=''">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        @instituto.jca
+      </a>
+      <a href="https://facebook.com/institutojca" target="_blank" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s;" onmouseover="this.style.color='#1877f2'" onmouseout="this.style.color=''">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        facebook.com/institutojca
+      </a>
+      <a href="tel:+5521971080952" style="display:inline-flex;align-items:center;gap:8px;color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color=''">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.18 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.62a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        (21) 97108-0952
+      </a>
+    </div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin-bottom:20px;"></div>
+    <p>Feito com <span class="footer-heart">❤️</span> pelo <strong>Instituto JCA</strong> · Publicação gratuita</p>
+  </div>
+</footer>
+
+<!-- CHAT BUBBLE -->
+<div id="chat-bubble">
+  <div id="chat-window">
+    <div id="chat-header">
+      <div class="chat-avatar">
+        <img src="{% static 'chat/imagens/guida.png' %}" alt="Guida" />
+      </div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">Guida</div>
+        <div class="chat-status"><div class="chat-status-dot"></div>Online agora</div>
+      </div>
+      <button id="chat-close">✕</button>
+    </div>
+    <div id="chat-messages">
+      <div class="msg bot">Olá! Sou a Guida 👋 Tire suas dúvidas sobre o Guia de Acesso e Permanência nas Universidades!</div>
+    </div>
+    <div id="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Digite sua pergunta..." autocomplete="off">
+      <button id="chat-send"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+    </div>
+  </div>
+  <button id="chat-toggle" title="Falar com Guida">
+    <img src="{% static 'chat/imagens/guida.png' %}" alt="Guida" />
+  </button>
+</div>
+
+<!-- ============================================================
+     CALCULADORA DE RENDA PER CAPITA — Instituto JCA
+     Cole este bloco ANTES do fechamento </body>
+     Cole o CSS no bloco <style> existente (ou em uma <style> nova)
+     ============================================================ -->
+
+<!-- ── ESTILOS DA CALCULADORA ── -->
+<style>
+/* BOTÃO FLUTUANTE */
+#calc-bubble {
+  position: fixed;
+  bottom: 27px;
+  right: 100px; /* fica ao lado do chat-bubble */
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* JANELA */
+#calc-window {
+  display: none;
+  flex-direction: column;
+  width: 400px;
+  max-height: 70vh;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 24px 64px rgba(37,99,235,.18), 0 8px 24px rgba(0,0,0,.1);
+  overflow: hidden;
+}
+#calc-window.open {
+  display: flex;
+  animation: chatIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* CABEÇALHO */
+#calc-header {
+  background: linear-gradient(135deg, #059669 0%, #10b981 60%, #34d399 100%);
+  color: white;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+#calc-header::before {
+  content: '';
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+}
+.calc-header-info { flex: 1; }
+.calc-header-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+}
+.calc-header-sub {
+  font-size: 11px;
+  opacity: .85;
+  margin-top: 2px;
+}
+#calc-close {
+  background: rgba(255,255,255,.15);
+  border: none; color: white;
+  width: 30px; height: 30px;
+  border-radius: 50%; cursor: pointer;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+  position: relative; z-index: 1; flex-shrink: 0;
+}
+#calc-close:hover { background: rgba(255,255,255,.3); transform: rotate(90deg); }
+
+/* CORPO COM SCROLL */
+#calc-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: var(--bg2);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+#calc-body::-webkit-scrollbar { width: 4px; }
+#calc-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* RENDA TOTAL */
+.calc-field-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  color: #059669;
+  margin-bottom: 8px;
+}
+.calc-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 2px 14px 2px 2px;
+  transition: border-color .25s;
+}
+.calc-input-row:focus-within {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5,150,105,.08);
+}
+.calc-prefix {
+  background: rgba(5,150,105,.1);
+  color: #059669;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.calc-input-row input[type="text"],
+.calc-input-row input[type="number"] {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  padding: 10px 4px;
+  outline: none;
+}
+
+/* MEMBROS */
+#membros-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.membro-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: msgIn .2s ease both;
+}
+.membro-row input[type="text"] {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s;
+}
+.membro-row input[type="text"]:focus { border-color: #059669; }
+.membro-row input[type="number"] {
+  width: 90px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s;
+}
+.membro-row input[type="number"]:focus { border-color: #059669; }
+.btn-remove-membro {
+  background: rgba(239,68,68,.1);
+  border: none;
+  color: #ef4444;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.btn-remove-membro:hover { background: #ef4444; color: white; }
+
+#btn-add-membro {
+  background: rgba(5,150,105,.08);
+  border: 1.5px dashed rgba(5,150,105,.4);
+  color: #059669;
+  border-radius: 10px;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  width: 100%;
+  transition: all .2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+#btn-add-membro:hover { background: rgba(5,150,105,.15); border-style: solid; }
+
+/* RESULTADO */
+#calc-result {
+  background: linear-gradient(135deg, rgba(5,150,105,.1), rgba(52,211,153,.06));
+  border: 1.5px solid rgba(5,150,105,.25);
+  border-radius: 16px;
+  padding: 18px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  animation: msgIn .3s ease;
+}
+#calc-result.visible { display: flex; }
+
+.result-main {
+  text-align: center;
+}
+.result-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  color: #059669;
+  margin-bottom: 6px;
+}
+.result-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: #059669;
+  line-height: 1;
+}
+.result-sm {
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 4px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.result-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.result-chip-label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 3px;
+}
+.result-chip-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ELEGIBILIDADE */
+.eligibility-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.eligibility-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--text2);
+  transition: all .2s;
+}
+.eligibility-item.ok {
+  border-color: rgba(5,150,105,.3);
+  background: rgba(5,150,105,.05);
+  color: #059669;
+}
+.eligibility-item.no {
+  border-color: rgba(239,68,68,.2);
+  color: var(--text3);
+}
+.elig-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.eligibility-item.ok .elig-dot { background: #059669; }
+.eligibility-item.no .elig-dot { background: var(--text3); }
+
+/* BOTÃO CALCULAR */
+#btn-calcular {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  width: 100%;
+  transition: all .25s;
+  box-shadow: 0 4px 16px rgba(5,150,105,.3);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+#btn-calcular:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(5,150,105,.4); }
+#btn-calcular:active { transform: translateY(0); }
+
+#btn-limpar {
+  background: transparent;
+  color: var(--text3);
+  border: none;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  padding: 6px;
+  transition: color .2s;
+  text-decoration: underline;
+  align-self: center;
+}
+#btn-limpar:hover { color: #ef4444; }
+
+/* TOGGLE BOTÃO */
+#calc-toggle {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #059669, #34d399);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(5,150,105,.4);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+  font-size: 24px;
+}
+#calc-toggle::before {
+  content: '';
+  position: absolute; inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #059669, #34d399);
+  opacity: .3;
+  animation: toggleRing 2s ease-in-out infinite;
+}
+#calc-toggle:hover { transform: scale(1.12); box-shadow: 0 12px 32px rgba(5,150,105,.5); }
+
+/* TOOLTIP */
+.calc-tooltip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all .2s;
+  pointer-events: none;
+}
+#calc-bubble:hover .calc-tooltip { opacity: 1; transform: translateY(0); }
+
+@media(max-width: 768px) {
+  #calc-window { width: calc(100vw - 24px); }
+  #calc-bubble { right: 20px; bottom: 100px; }
+}
+</style>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ESTRUTURA HTML — cole antes do </body>
+     (ou logo após o bloco #chat-bubble existente)
+════════════════════════════════════════════════════════════════ -->
+<div id="calc-bubble">
+
+  <!-- JANELA DA CALCULADORA -->
+  <div id="calc-window">
+
+    <!-- Cabeçalho -->
+    <div id="calc-header">
+      <div class="chat-avatar"><img src="{% static 'chat/imagens/calculadora.jpg' %}" alt="Nome" /></div>
+      <div class="calc-header-info">
+        <div class="calc-header-name">Calculadora de Renda</div>
+        <div class="calc-header-sub">Renda per capita familiar</div>
+      </div>
+      <button id="calc-close">✕</button>
+    </div>
+
+    <!-- Corpo -->
+    <div id="calc-body">
+
+      <!-- Renda total bruta -->
+      <div>
+        <div class="calc-field-label">💰 Renda familiar total (bruta)</div>
+        <div class="calc-input-row">
+          <span class="calc-prefix">R$</span>
+          <input type="text" id="renda-total" placeholder="0,00" inputmode="decimal" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Membros da família -->
+      <div>
+        <div class="calc-field-label">👨‍👩‍👧‍👦 Membros do grupo familiar</div>
+        <div id="membros-list">
+          <!-- linhas geradas pelo JS -->
+        </div>
+        <button id="btn-add-membro" style="margin-top:8px;">
+          <span style="font-size:16px;">＋</span> Adicionar membro
+        </button>
+      </div>
+
+      <!-- Botão calcular -->
+      <button id="btn-calcular">
+        <span>📊</span> Calcular Renda Per Capita
+      </button>
+
+      <!-- Resultado -->
+      <div id="calc-result">
+        <div class="result-main">
+          <div class="result-label">Renda per capita mensal</div>
+          <div class="result-value" id="result-value">R$ 0,00</div>
+          <div class="result-sm" id="result-desc">por pessoa no grupo familiar</div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-chip">
+            <div class="result-chip-label">Renda total</div>
+            <div class="result-chip-value" id="chip-renda">—</div>
+          </div>
+          <div class="result-chip">
+            <div class="result-chip-label">Nº de membros</div>
+            <div class="result-chip-value" id="chip-membros">—</div>
+          </div>
+          <div class="result-chip">
+            <div class="result-chip-label">Sal. mínimos</div>
+            <div class="result-chip-value" id="chip-sm">—</div>
+          </div>
+          <div class="result-chip">
+            <div class="result-chip-label">Linha pobreza</div>
+            <div class="result-chip-value" id="chip-linha">—</div>
+          </div>
+        </div>
+
+        <!-- Elegibilidade a programas -->
+        <div>
+          <div class="calc-field-label" style="margin-bottom:8px;">✅ Elegibilidade a programas</div>
+          <div class="eligibility-list" id="elig-list"></div>
+        </div>
+
+        <button id="btn-limpar">↩ Limpar e recalcular</button>
+      </div>
+
+    </div><!-- /calc-body -->
+  </div><!-- /calc-window -->
+
+  <!-- Tooltip + Botão toggle -->
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+    <span class="calc-tooltip">Calcular renda per capita</span>
+    <button id="calc-toggle" title="Calculadora de Renda Per Capita">🧮</button>
+  </div>
+
+</div><!-- /calc-bubble -->
+
+
+<!-- ── SCRIPT DA CALCULADORA ── -->
+<script>
+(function() {
+  const SM = 1518; // Salário mínimo 2025
+
+  // Referências
+  const calcWindow  = document.getElementById('calc-window');
+  const calcClose   = document.getElementById('calc-close');
+  const calcToggle  = document.getElementById('calc-toggle');
+  const rendaInput  = document.getElementById('renda-total');
+  const membrosList = document.getElementById('membros-list');
+  const addBtn      = document.getElementById('btn-add-membro');
+  const calcBtn     = document.getElementById('btn-calcular');
+  const limparBtn   = document.getElementById('btn-limpar');
+  const resultado   = document.getElementById('calc-result');
+
+  // Abrir / fechar
+  calcToggle.addEventListener('click', () => {
+    calcWindow.classList.toggle('open');
+    if (calcWindow.classList.contains('open') && membrosList.children.length === 0) {
+      addMembro('Titular', '');
+    }
+  });
+  calcClose.addEventListener('click', () => calcWindow.classList.remove('open'));
+
+  // Formatar moeda enquanto digita
+  rendaInput.addEventListener('input', function() {
+    let raw = this.value.replace(/\D/g, '');
+    if (!raw) { this.value = ''; return; }
+    let num = (parseInt(raw, 10) / 100).toFixed(2);
+    this.value = num.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  });
+
+  // Adicionar membro
+  let memberCount = 0;
+  function addMembro(nome, renda) {
+    memberCount++;
+    const id = 'membro-' + memberCount;
+    const row = document.createElement('div');
+    row.className = 'membro-row';
+    row.dataset.id = id;
+    row.innerHTML = `
+      <input type="text" placeholder="Nome (ex: Mãe)" value="${nome || ''}" class="membro-nome">
+      <input type="number" placeholder="R$ renda" min="0" step="0.01" value="${renda || ''}" class="membro-renda" title="Renda individual (opcional)">
+      <button class="btn-remove-membro" title="Remover">−</button>
+    `;
+    row.querySelector('.btn-remove-membro').addEventListener('click', () => {
+      if (membrosList.children.length > 1) row.remove();
+    });
+    membrosList.appendChild(row);
+  }
+
+  addBtn.addEventListener('click', () => addMembro('', ''));
+
+  // Parsear moeda BR → número
+  function parseBR(str) {
+    if (!str) return 0;
+    return parseFloat(str.replace(/\./g, '').replace(',', '.')) || 0;
+  }
+
+  // Formatar moeda
+  function fmtBRL(n) {
+    return 'R$ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  // Calcular
+  calcBtn.addEventListener('click', calcular);
+
+  function calcular() {
+    // Coletar renda
+    let rendaTotal = parseBR(rendaInput.value);
+
+    // Somar rendas individuais dos membros (se preenchidas, somam à total)
+    let rendaMembros = 0;
+    document.querySelectorAll('.membro-renda').forEach(inp => {
+      rendaMembros += parseFloat(inp.value) || 0;
+    });
+
+    // Se campo total estiver vazio mas membros têm renda, usa soma dos membros
+    if (!rendaTotal && rendaMembros > 0) {
+      rendaTotal = rendaMembros;
+      rendaInput.value = rendaTotal.toFixed(2).replace('.', ',');
+    }
+
+    const nMembros = membrosList.children.length;
+
+    if (!rendaTotal || rendaTotal <= 0) {
+      rendaInput.closest('.calc-input-row').style.borderColor = '#ef4444';
+      setTimeout(() => rendaInput.closest('.calc-input-row').style.borderColor = '', 1500);
+      return;
+    }
+
+    const perCapita = rendaTotal / nMembros;
+    const emSM      = perCapita / SM;
+
+    // Preencher resultado
+    document.getElementById('result-value').textContent  = fmtBRL(perCapita);
+    document.getElementById('result-desc').textContent   = nMembros === 1 ? '1 pessoa no grupo familiar' : `${nMembros} pessoas no grupo familiar`;
+    document.getElementById('chip-renda').textContent    = fmtBRL(rendaTotal);
+    document.getElementById('chip-membros').textContent  = nMembros + ' pessoas';
+    document.getElementById('chip-sm').textContent       = emSM.toFixed(2) + ' SM';
+
+    const linhaPobreza = perCapita <= 218 ? '🔴 Extrema' : perCapita <= 436 ? '🟠 Pobreza' : '🟢 Acima';
+    document.getElementById('chip-linha').textContent = linhaPobreza;
+
+    // Programas de elegibilidade
+    const programas = [
+      {
+        nome: 'Bolsa Família',
+        cond: perCapita <= 218,
+        desc: perCapita <= 218 ? 'Elegível (per capita ≤ R$ 218)' : 'Não elegível (per capita > R$ 218)',
+      },
+      {
+        nome: 'CadÚnico',
+        cond: perCapita <= 3 * SM,
+        desc: perCapita <= 3 * SM ? 'Elegível (per capita ≤ 3 SM)' : 'Não elegível',
+      },
+      {
+        nome: 'PROUNI (bolsa integral)',
+        cond: emSM <= 1.5,
+        desc: emSM <= 1.5 ? 'Elegível (per capita ≤ 1,5 SM)' : emSM <= 3 ? 'Bolsa parcial (50%) — per capita ≤ 3 SM' : 'Não elegível',
+      },
+      {
+        nome: 'PROUNI (bolsa 50%)',
+        cond: emSM <= 3,
+        desc: emSM <= 3 ? 'Elegível (per capita ≤ 3 SM)' : 'Não elegível',
+      },
+      {
+        nome: 'FIES',
+        cond: emSM <= 3,
+        desc: emSM <= 3 ? 'Pode solicitar (per capita ≤ 3 SM)' : 'Renda acima do limite',
+      },
+      {
+        nome: 'Passe Livre Universitário (RJ)',
+        cond: emSM <= 1,
+        desc: emSM <= 1 ? 'Elegível (per capita ≤ 1 SM)' : 'Verifique critérios adicionais',
+      },
+      {
+        nome: 'Auxílio Permanência PNAES',
+        cond: emSM <= 1.5,
+        desc: emSM <= 1.5 ? 'Elegível (per capita ≤ 1,5 SM)' : 'Consulte o edital da sua universidade',
+      },
+    ];
+
+    const eligList = document.getElementById('elig-list');
+    eligList.innerHTML = '';
+    programas.forEach(p => {
+      const item = document.createElement('div');
+      item.className = 'eligibility-item ' + (p.cond ? 'ok' : 'no');
+      item.innerHTML = `<div class="elig-dot"></div><div><strong>${p.nome}</strong><br><span style="font-size:11px;">${p.desc}</span></div>`;
+      eligList.appendChild(item);
+    });
+
+    resultado.classList.add('visible');
+    resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Limpar
+  limparBtn.addEventListener('click', () => {
+    rendaInput.value = '';
+    membrosList.innerHTML = '';
+    memberCount = 0;
+    addMembro('Titular', '');
+    resultado.classList.remove('visible');
+  });
+
+  // Enter para calcular
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && calcWindow.classList.contains('open')) calcular();
+  });
+})();
+</script>
+
+<script>
+// CURSOR GLOW
+const glow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// CARD MOUSE GLOW
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+    const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+    card.style.setProperty('--mx', x + '%');
+    card.style.setProperty('--my', y + '%');
+  });
+});
+
+// THEME
+const toggle = document.getElementById('theme-toggle');
+toggle.addEventListener('click', () => {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  toggle.textContent = dark ? '🌙 Escuro' : '☀️ Claro';
+});
+
+// NAV ACTIVE
+const navObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.parentElement.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    }
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('section[id]').forEach(s => navObserver.observe(s));
+
+// REVEAL
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// COUNTER ANIMATION
+function animateCounter(el, target, duration=1800) {
+  let start = null;
+  const step = ts => {
+    if (!start) start = ts;
+    const progress = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 4);
+    el.textContent = Math.floor(ease * target) + (target === 7 ? '+' : '');
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const target = parseInt(e.target.dataset.target);
+      if (target) animateCounter(e.target, target);
+      counterObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+
+// YOUTUBE THUMBNAIL
+document.getElementById('yt-container').addEventListener('click', function() {
+  document.getElementById('yt-thumb').style.display = 'none';
+  document.getElementById('yt-iframe').src = 'https://www.youtube.com/embed/ytd_IGfpkrM?autoplay=1';
+});
+
+// CHAT
+const chatWindow = document.getElementById('chat-window');
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const chatSend = document.getElementById('chat-send');
+
+document.getElementById('chat-toggle').addEventListener('click', () => {
+  chatWindow.classList.toggle('open');
+  if (chatWindow.classList.contains('open')) chatInput.focus();
+});
+document.getElementById('chat-close').addEventListener('click', () => chatWindow.classList.remove('open'));
+
+function addMsg(content, type) {
+  const m = document.createElement('div');
+  m.className = 'msg ' + type;
+  if (type === 'loading') {
+    m.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  } else {
+    m.textContent = content;
+  }
+  chatMessages.appendChild(m);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return m;
+}
+
+async function enviar() {
+  const p = chatInput.value.trim();
+  if (!p) return;
+  chatInput.value = '';
+  chatInput.disabled = chatSend.disabled = true;
+  addMsg(p, 'user');
+  const load = addMsg('', 'loading');
+  try {
+    const r = await fetch('/api/perguntar/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)?.[1] || '' },
+      body: JSON.stringify({ pergunta: p })
+    });
+    const d = await r.json();
+    load.remove();
+    addMsg(d.resposta || 'Não encontrei uma resposta.', 'bot');
+  } catch {
+    load.remove();
+    addMsg('Erro ao conectar com o servidor.', 'bot');
+  } finally {
+    chatInput.disabled = chatSend.disabled = false;
+    chatInput.focus();
+  }
+}
+
+chatSend.addEventListener('click', enviar);
+chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') enviar(); });
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+
+  const BG = [
+    ['#020818','#050d2e','#010610'],
+    ['#04051a','#0c0828','#030318'],
+    ['#010f20','#031530','#010812'],
+    ['#060318','#110525','#040210'],
+  ];
+  let bi=0, bj=1, bt=0;
+
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function lerpHex(h1,h2,t){
+    const p=s=>parseInt(s,16);
+    const r1=p(h1.slice(1,3)),g1=p(h1.slice(3,5)),b1=p(h1.slice(5,7));
+    const r2=p(h2.slice(1,3)),g2=p(h2.slice(3,5)),b2=p(h2.slice(5,7));
+    return `rgb(${~~lerp(r1,r2,t)},${~~lerp(g1,g2,t)},${~~lerp(b1,b2,t)})`;
+  }
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', ()=>{ resize(); buildAll(); });
+
+  const NCOUNT = 70;
+  let nodes = [];
+  function buildAll(){
+    nodes = Array.from({length:NCOUNT}, ()=>({
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.03, vy:(Math.random()-.5)*.03,
+      r: Math.random()*2+1.2,
+      wA: Math.random()*8+3, wF: Math.random()*.00006+.00002,
+      wP: Math.random()*Math.PI*2, baseY:0,
+      hue: 200+Math.random()*60, bright: Math.random()*.5+.5,
+    }));
+    nodes.forEach(n=>n.baseY=n.y);
+  }
+  buildAll();
+
+  const BLOBS = Array.from({length:5},()=>({
+    x:Math.random()*W, y:Math.random()*H,
+    vx:(Math.random()-.5)*.015, vy:(Math.random()-.5)*.015,
+    r: Math.random()*300+200,
+    hue: 210+Math.random()*80, alpha: Math.random()*.06+.03,
+  }));
+
+  const RINGS = Array.from({length:3},(_,i)=>({
+    phase: i*(Math.PI*2/3), speed:.0002+i*.0001, alpha:.04+i*.01,
+  }));
+
+  let mx=W/2, my=H/2;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+
+  const LINK_DIST = 140;
+
+  function frame(){
+    t++;
+    bt += .00006;
+    if(bt>=1){bt=0;bi=bj;bj=(bj+1)%BG.length;}
+    const c0=lerpHex(BG[bi][0],BG[bj][0],bt);
+    const c1=lerpHex(BG[bi][1],BG[bj][1],bt);
+    const c2=lerpHex(BG[bi][2],BG[bj][2],bt);
+    const bgGrad=ctx.createLinearGradient(0,0,W,H);
+    bgGrad.addColorStop(0,c0); bgGrad.addColorStop(.5,c1); bgGrad.addColorStop(1,c2);
+    ctx.fillStyle=bgGrad; ctx.fillRect(0,0,W,H);
+
+    BLOBS.forEach(b=>{
+      b.x+=b.vx; b.y+=b.vy;
+      if(b.x<-b.r)b.x=W+b.r; if(b.x>W+b.r)b.x=-b.r;
+      if(b.y<-b.r)b.y=H+b.r; if(b.y>H+b.r)b.y=-b.r;
+      const ng=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      ng.addColorStop(0,`hsla(${b.hue},80%,60%,${b.alpha})`);
+      ng.addColorStop(1,'transparent');
+      ctx.fillStyle=ng; ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fill();
+    });
+
+    RINGS.forEach(ring=>{
+      const cx=W/2+Math.cos(t*.001+ring.phase)*W*.15;
+      const cy=H/2+Math.sin(t*.0013+ring.phase)*H*.12;
+      const segments=180; const baseR=Math.min(W,H)*.35;
+      ctx.beginPath();
+      for(let s=0;s<=segments;s++){
+        const a=s/segments*Math.PI*2;
+        const wobble=Math.sin(a*6+t*ring.speed)*18+Math.cos(a*3+t*.002)*12;
+        const rx=cx+Math.cos(a)*(baseR+wobble);
+        const ry=cy+Math.sin(a)*(baseR+wobble);
+        s===0?ctx.moveTo(rx,ry):ctx.lineTo(rx,ry);
+      }
+      ctx.closePath();
+      ctx.strokeStyle=`rgba(100,140,255,${ring.alpha})`; ctx.lineWidth=.8; ctx.stroke();
+    });
+
+    nodes.forEach(n=>{
+      const dx=mx-n.x, dy=my-n.y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<200){ n.vx+=dx/d*.001; n.vy+=dy/d*.001; }
+      const spd=Math.sqrt(n.vx*n.vx+n.vy*n.vy);
+      if(spd>.08){n.vx*=.08/spd;n.vy*=.08/spd;}
+    });
+
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.baseY+=n.vy*.03;
+      n.y=n.baseY+Math.sin(t*n.wF*1000+n.wP)*n.wA;
+      if(n.x<-20)n.x=W+20; if(n.x>W+20)n.x=-20;
+      if(n.baseY<-80)n.baseY=H+80; if(n.baseY>H+80)n.baseY=-80;
+    });
+
+    for(let i=0;i<NCOUNT;i++){
+      for(let j=i+1;j<NCOUNT;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<LINK_DIST){
+          const a=(1-d/LINK_DIST)*.3;
+          const hue=(nodes[i].hue+nodes[j].hue)/2;
+          ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.strokeStyle=`hsla(${hue},80%,70%,${a})`; ctx.lineWidth=(1-d/LINK_DIST)*1.2; ctx.stroke();
+        }
+      }
+    }
+
+    nodes.forEach(n=>{
+      const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*5);
+      g.addColorStop(0,`hsla(${n.hue},90%,70%,.12)`); g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(n.x,n.y,n.r*5,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${n.hue},85%,75%,${n.bright})`; ctx.fill();
+    });
+
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>
