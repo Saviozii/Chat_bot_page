@@ -25,9 +25,9 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # CONFIGURAÇÕES CENTRAIS (PRODUÇÃO)
 # =============================================================================
-
-PDF_PATH = "/home/savi021/Downloads/Ebook.pdf"
-TXT_IMAGENS = "/home/savi021/Documentos/Novo_mundo/data/Infor.txt"
+#Essas informacoes ficam no .env
+PDF_PATH = "data/Ebook.pdf"
+TXT_IMAGENS = "data/Infor.txt"
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 COLLECTION = os.getenv("QDRANT_COLLECTION", "pdf_docs_prod")

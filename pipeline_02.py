@@ -11,13 +11,13 @@ from qdrant_client.models import VectorParams, Distance
 # CONFIGURAÇÕES CENTRAIS
 # =============================================================================
 
-PDF_PATH = "/home/savi021/Downloads/Ebook.pdf"
+PDF_PATH = "data/Ebook.pdf"
 
 # Caminho do arquivo .txt com as descrições das imagens.
 # Estrutura esperada: blocos separados por "---", cada um começando com
 # [IMAGEM — Página X] seguido da descrição.
 
-TXT_IMAGENS = "/home/savi021/Documentos/Novo_mundo/data/Infor.txt"
+TXT_IMAGENS = "data/Infor.txt"
 
 QDRANT_URL = "http://localhost:6333"
 COLLECTION = "pdf_docs"
