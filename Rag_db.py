@@ -195,19 +195,3 @@ def perguntar(pergunta: str, historico: list[dict] = []) -> dict:
     }
 
 if __name__ == "__main__":
-    iniciar_chat()
-
-# =============================================================================
-# AGENTE GUIDA — RAG com Ollama + Qdrant
-# =============================================================================
-# O que esse script faz:
-#   1. Conecta ao banco vetorial Qdrant (onde seu PDF + TXT já foram indexados)
-#   2. Recebe uma pergunta do usuário
-#   3. Transforma a pergunta em vetor (embedding) via bge-m3
-#   4. Busca os trechos mais relevantes no Qdrant (PDF e imagens juntos)
-#   5. Monta um prompt com contexto + histórico da conversa
-#   6. Chama o LLM local (llama3.2) para gerar a resposta
-#   7. Retorna a resposta + as fontes (página e origem)
-#
-# Pré-requisito: rodar o ingest.py antes para indexar o PDF e o TXT.
-# =============================================================================
