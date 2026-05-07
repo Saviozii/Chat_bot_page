@@ -20,7 +20,7 @@ EMBEDDING_MODEL = "bge-m3"
 VECTOR_SIZE = 1024
 
 CHUNK_SIZE      = 600
-# Garante que frases que caem na "borda" de dois chunks não se percam.
+
 CHUNK_OVERLAP   = 100
 
 def load_pdf() -> list[Document]:
