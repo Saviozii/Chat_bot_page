@@ -62,9 +62,6 @@ PERGUNTA ATUAL:
 RESPOSTA (cite as páginas quando relevante):
 """
 
-# =============================================================================
-# PASSO 1 — CONEXÃO COM O BANCO VETORIAL
-# =============================================================================
 def get_vector_store() -> QdrantVectorStore:
     embeddings = OllamaEmbeddings(
         model=EMBEDDING_MODEL,
@@ -76,23 +73,18 @@ def get_vector_store() -> QdrantVectorStore:
         collection_name=COLLECTION,
     )
 
-# =============================================================================
-# PASSO 2 — BUSCA DE CONTEXTO NO QDRANT
-# =============================================================================
+
 def buscar_contexto(pergunta: str) -> list[tuple]:
     store = get_vector_store()
 
-    # Busca os TOP_K_BUSCA chunks mais similares no espaço vetorial
     resultados = store.similarity_search_with_score(pergunta, k=TOP_K_BUSCA)
 
-    # Remove chunks com score baixo (provavelmente irrelevantes para a pergunta)
     relevantes = [
         (doc, score)
         for doc, score in resultados
         if score >= SCORE_MINIMO
     ]
 
-    # Prioriza chunks vindos do TXT de imagens somando um bônus ao score
     BOOST_IMAGEM = 0.25
 
     def score_com_boost(item):
@@ -101,22 +93,16 @@ def buscar_contexto(pergunta: str) -> list[tuple]:
             return score + BOOST_IMAGEM
         return score
 
-    # Ordena usando o score com boost aplicado
     relevantes.sort(key=score_com_boost, reverse=True)
 
-    # Devolve apenas os TOP_K_FINAL melhores
     return relevantes[:TOP_K_FINAL]
 
 
-# =============================================================================
-# PASSO 3 — FORMATAÇÃO DO HISTÓRICO
-# =============================================================================
 def formatar_historico(historico: list[dict]) -> str:
     if not historico:
         return "(sem histórico — esta é a primeira pergunta)"
 
     linhas = []
-    # Usa apenas as últimas MAX_HISTORICO trocas para não sobrecarregar o prompt
     for troca in historico[-MAX_HISTORICO:]:
         linhas.append(f"Usuário: {troca['pergunta']}")
         linhas.append(f"Guida: {troca['resposta']}")
@@ -124,47 +110,29 @@ def formatar_historico(historico: list[dict]) -> str:
     return "\n".join(linhas)
 
 
-# =============================================================================
-# PASSO 4 — FUNÇÃO PRINCIPAL: PERGUNTAR
-# =============================================================================
-# Orquestra tudo: busca → monta prompt → chama LLM → retorna resposta.
-#
-# Parâmetros:
-#   pergunta  → texto da pergunta do usuário
-#   historico → lista de dicts {"pergunta": ..., "resposta": ...}
-#               começa vazia e cresce a cada turno no loop de chat
-#
-# Retorna:
-#   "resposta" → texto gerado pelo LLM
-#   "fontes"   → lista com página, score e trecho de cada chunk usado
-
 def perguntar(pergunta: str, historico: list[dict] = []) -> dict:
-    # 1. Busca os chunks relevantes no Qdrant
     resultados = buscar_contexto(pergunta)
 
-    # Se não encontrou nada acima do score mínimo, retorna mensagem padrão
     if not resultados:
         return {
             "resposta": "Não encontrei informações relevantes no documento para essa pergunta.",
             "fontes": [],
         }
 
-    # 2. Monta o bloco de contexto para o prompt
-    # Cada chunk aparece com sua página e origem (pdf ou imagem)
     contexto = "\n\n---\n\n".join(
         "[Página {pagina} | Fonte: {fonte}]\n{texto}".format(
             pagina=doc.metadata.get("page", "?"),
-            # Mostra de onde veio o chunk: PDF ou descrição de imagem
+           
             fonte=doc.metadata.get("source", "pdf"),
             texto=doc.page_content
         )
         for doc, score in resultados
     )
 
-    # 3. Formata o histórico da conversa
+
     historico_str = formatar_historico(historico)
 
-    # 4. Monta o prompt completo
+
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     
     prompt = prompt_template.format(
@@ -173,17 +141,16 @@ def perguntar(pergunta: str, historico: list[dict] = []) -> dict:
         question=pergunta,
     )
 
-    # 5. Chama o LLM local via Ollama
+
     llm = Ollama(model=LLM_MODEL, base_url=OLLAMA_URL)
     resposta = llm.invoke(prompt)
 
-    # 6. Monta a lista de fontes usadas (para exibir no chat)
+
     fontes = [
         {
             "page":   doc.metadata.get("page", "?"),
             "source": doc.metadata.get("source", "pdf"),
             "score":  round(score, 3),
-            # Preview dos primeiros 150 caracteres do trecho
             "trecho": doc.page_content[:150] + "...",
         }
         for doc, score in resultados
