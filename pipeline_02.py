@@ -75,9 +75,6 @@ def load_txt_imagens() -> list[Document]:
     return documents
 
 
-# =============================================================================
-# PASSO 3 — DIVIDE EM CHUNKS
-# =============================================================================
 def split_documents(documents: list[Document]) -> list[Document]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
@@ -131,7 +128,7 @@ def add_to_qdrant(chunks: list[Document]) -> None:
     print(f"  ✅ {len(chunks)} chunks indexados com sucesso!")
 
 
-#Funcao que faz rodar tudo
+#terminal
 def main():
     pdf_docs = load_pdf()
 
