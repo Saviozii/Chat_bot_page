@@ -2,22 +2,16 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from langchain_community.llms import Ollama
 from langchain_core.prompts import ChatPromptTemplate
-# =============================================================================
-# CONFIGURAÇÕES CENTRAIS
-# =============================================================================
+
 QDRANT_URL      = "http://localhost:6333"
 COLLECTION      = "pdf_docs"
 EMBEDDING_MODEL = "bge-m3"
 LLM_MODEL       = "llama3.2"
 OLLAMA_URL      = "http://localhost:11434"
 
-# Quantos chunks buscar antes de filtrar por score
 TOP_K_BUSCA     = 8
-# Quantos chunks manter após o filtro (os mais relevantes)
 TOP_K_FINAL     = 5
-# Score mínimo de similaridade para aceitar um chunk.
 SCORE_MINIMO    = 0.4
-# Quantas trocas de conversa anteriores incluir no prompt
 MAX_HISTORICO   = 3
 
 PROMPT_TEMPLATE = """
